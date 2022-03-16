@@ -66,3 +66,31 @@ void heap_sort(int arr[], int len){
         heapify(arr, 0, i);
     }
 }
+
+// merge sort
+void merge_sort_main(int A[], int l, int r, int B[]){
+    int m = (l + r) / 2;
+    if ((m - l) > 0){
+        merge_sort_main(A, l, m, B);
+    }
+    if ((r - m) > 1){
+        merge_sort_main(A, m+1, r, B);
+    }
+
+    int i = l, j = m+1;
+    for (int k=l; k<=r; k++){
+        if ( (i<=m && j>r) || (i<=m && j<=r && A[i] < A[j]) ){
+            B[k] = A[i++];
+        } else{
+            B[k] = A[j++];
+        }
+    }
+    for (int i=0; i<=r; i++){
+        A[i] = B[i];
+    }
+}
+
+void merge_sort(int arr[], int len){
+    int B[len];
+    merge_sort_main(arr, 0, len-1, B);
+}
