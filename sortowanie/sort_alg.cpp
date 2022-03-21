@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+
 // features
 void swap(int* i, int* j){
     int temp = *i;
@@ -93,4 +96,37 @@ void merge_sort_main(int A[], int l, int r, int B[]){
 void merge_sort(int arr[], int len){
     int B[len];
     merge_sort_main(arr, 0, len-1, B);
+}
+
+// quick sort
+void quick_sort_main(int A[], int p, int r){
+    int x = A[(p+r)/2];
+    int i = p-1;
+    int j = r+1;
+    while (true){
+        do{
+            j--;
+        }while(A[j] > x); // szuka elementów mniejszych od pivota
+
+        do{
+            i++;
+        }while(A[i] < x); // szuka elementów większych od pivota
+
+        if (i<=j){
+            swap(&A[i], &A[j]);
+        } else{
+            break;
+        }
+    }
+    if (j>p){
+        quick_sort_main(A, p, j);
+    }
+    if (i<r){
+        quick_sort_main(A, i, r);
+    }
+    
+}
+
+void quick_sort(int arr[], int len){
+    quick_sort_main(arr, 0, len-1);
 }

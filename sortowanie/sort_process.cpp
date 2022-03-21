@@ -4,9 +4,9 @@
 using namespace std;
 
 int main(){
-    int arr[] = {5, 3, 9, 8, 1, 2, 4, 7, 6};
+    int arr[] = {1, 2, 8, 9, 5};
     int len = sizeof(arr) / sizeof(*arr);
-    merge_sort(arr, len);
+    quick_sort(arr, len);
     for (int i=0; i<len; i++)
         cout << arr[i] << " ";
     cout << endl;
