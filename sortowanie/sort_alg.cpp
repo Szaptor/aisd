@@ -88,8 +88,8 @@ void merge_sort_main(int A[], int l, int r, int B[]){
             B[k] = A[j++];
         }
     }
-    for (int i=0; i<=r; i++){
-        A[i] = B[i];
+    for (int k=l; k<=r; k++){
+        A[k] = B[k];
     }
 }
 
