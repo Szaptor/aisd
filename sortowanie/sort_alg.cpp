@@ -1,5 +1,7 @@
-#include <iostream>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
+
 
 // features
 void swap(int* i, int* j){
@@ -100,7 +102,10 @@ void merge_sort(int arr[], int len){
 
 // quick sort
 void quick_sort_main(int A[], int p, int r){
-    int x = A[(p+r)/2];
+    int x = A[p+(int)(rand()%(r-p))]; // losowy pivot
+    // int x = A[r]; // prawy pivot
+    // int x = A[(p+r)/2]; // środkowy pivot
+    
     int i = p-1;
     int j = r+1;
     while (true){

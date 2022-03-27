@@ -5,13 +5,13 @@
 #include <ctime>
 #include "sort_alg.cpp"
 
-#define MAXLEN 150000
+#define MAXLEN 200000
 
 using namespace std;
 
-enum generation_mode {RANDOM, ASCENDING, DESCENDING, VSHAPED};
+enum generation_mode {RANDOM, ASCENDING, DESCENDING, VSHAPED, ASHAPED};
 
-void generate_array(int arr[], int len, generation_mode mode){ // negative value after last element
+void generate_array(int arr[], int len, generation_mode mode){
     int i, j;
 
     switch(mode){
@@ -19,20 +19,17 @@ void generate_array(int arr[], int len, generation_mode mode){ // negative value
             for (i=0; i<len; i++){
                 arr[i] = (rand() % 30000) + 1;
             }
-            arr[i] = -1;
             break;
         case ASCENDING:
             for (i=0; i<len; i++){
                 arr[i] = i + 1;
             }
-            arr[i] = -1;
             break;
         case DESCENDING:
             j = len;
             for (i=0; i<len; i++){
                 arr[i] = j--;
             }
-            arr[i] = -1;
             break;
         case VSHAPED:
             j = len/2;
@@ -42,45 +39,50 @@ void generate_array(int arr[], int len, generation_mode mode){ // negative value
             for (i=len/2; i<len; i++){
                 arr[i] = j++;
             }
-            arr[i] = -1;
-    }
-    
+            break;
+        case ASHAPED:
+            j = 0;
+            for (i=0; i<len/2; i++){
+                arr[i] = j++;
+            }
+            for (i=len/2; i<len; i++){
+                arr[i] = j--;
+            }
+            break;
+    }  
+}
+
+double measure_time(int arr[], int elements, int cpyarr[], void (*sort_func)(int[], int)){
+        clock_t start;
+        copy(arr, arr+elements, cpyarr);
+        start = clock();
+        sort_func(cpyarr, elements);
+        return (double)(clock() - start) / CLOCKS_PER_SEC;
 }
 
 int main(){
     srand(time(NULL));
-
+// clock_t start;
     int elements, step = 10000, counter = 0;
     elements = step;
     int arr[MAXLEN], cpyarr[MAXLEN];
-    clock_t start;
 
-    cout << "\"Liczba elementow\";\"Insertion sort\";\"Selection sort\";\"Heap sort\";\"Merge sort\"" << endl;
+    // cout << "\"Liczba elementow\";\"Insertion sort\";\"Selection sort\";\"Heap sort\";\"Merge sort\"" << endl;
 
     while (counter++ < 15){
-        generate_array(arr, elements, DESCENDING);
+        generate_array(arr, elements, ASHAPED);
 
         cout << elements << ";";
 
-        copy(arr, arr+elements, cpyarr);
-        start = clock();
-        insertion_sort(cpyarr, elements);
-        cout << (double)(clock() - start) / CLOCKS_PER_SEC << ";";
+        // cout << measure_time(arr, elements, cpyarr, &quick_sort) << endl;
 
-        copy(arr, arr+elements, cpyarr);
-        start = clock();
-        selection_sort(cpyarr, elements);
-        cout << (double)(clock() - start) / CLOCKS_PER_SEC << ";";
+        cout << measure_time(arr, elements, cpyarr, &insertion_sort) << ";";
 
-        copy(arr, arr+elements, cpyarr);
-        start = clock();
-        heap_sort(cpyarr, elements);
-        cout << (double)(clock() - start) / CLOCKS_PER_SEC << ";";
+        cout << measure_time(arr, elements, cpyarr, &selection_sort) << ";";
 
-        copy(arr, arr+elements, cpyarr);
-        start = clock();
-        merge_sort(cpyarr, elements);
-        cout << (double)(clock() - start) / CLOCKS_PER_SEC << endl;
+        cout << measure_time(arr, elements, cpyarr, &heap_sort) << ";";
+
+        cout << measure_time(arr, elements, cpyarr, &merge_sort) << endl;
 
         elements += step;
     }
