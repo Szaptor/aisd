@@ -9,7 +9,7 @@
 
 using namespace std;
 
-enum generation_mode {RANDOM, ASCENDING, DESCENDING, VSHAPED, ASHAPED};
+enum generation_mode {RANDOM, ASCENDING, DESCENDING, VSHAPED, ASHAPED, CONSTANT};
 
 void generate_array(int arr[], int len, generation_mode mode){
     int i, j;
@@ -49,6 +49,11 @@ void generate_array(int arr[], int len, generation_mode mode){
                 arr[i] = j--;
             }
             break;
+        case CONSTANT:
+            for (i=0; i<len; i++){
+                arr[i] = 1;
+            }
+            break;
     }  
 }
 
@@ -67,14 +72,12 @@ int main(){
     elements = step;
     int arr[MAXLEN], cpyarr[MAXLEN];
 
-    // cout << "\"Liczba elementow\";\"Insertion sort\";\"Selection sort\";\"Heap sort\";\"Merge sort\"" << endl;
+    cout << "\"Liczba elementow\";\"Insertion sort\";\"Selection sort\";\"Heap sort\";\"Merge sort\"" << endl;
 
     while (counter++ < 15){
-        generate_array(arr, elements, ASHAPED);
-
+        generate_array(arr, elements, CONSTANT);
+        cout << endl;
         cout << elements << ";";
-
-        // cout << measure_time(arr, elements, cpyarr, &quick_sort) << endl;
 
         cout << measure_time(arr, elements, cpyarr, &insertion_sort) << ";";
 
@@ -82,7 +85,9 @@ int main(){
 
         cout << measure_time(arr, elements, cpyarr, &heap_sort) << ";";
 
-        cout << measure_time(arr, elements, cpyarr, &merge_sort) << endl;
+        cout << measure_time(arr, elements, cpyarr, &merge_sort) << ";";
+
+        // cout << measure_time(arr, elements, cpyarr, &quick_sort) << endl;
 
         elements += step;
     }
