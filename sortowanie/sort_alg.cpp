@@ -102,13 +102,15 @@ void merge_sort(int arr[], int len){
 
 // quick sort
 void quick_sort_main(int A[], int p, int r){
-    int x = A[p+(int)(rand()%(r-p))]; // losowy pivot
+    // cout << p << " " << r << endl;
+    // int x = A[p+(int)(rand()%(r-p))]; // losowy pivot
     // int x = A[r]; // prawy pivot
-    // int x = A[(p+r)/2]; // środkowy pivot
+    int x = A[(p+r)/2]; // środkowy pivot
     
     int i = p-1;
     int j = r+1;
     while (true){
+        
         do{
             j--;
         }while(A[j] > x); // szuka elementów mniejszych od pivota
@@ -116,13 +118,13 @@ void quick_sort_main(int A[], int p, int r){
         do{
             i++;
         }while(A[i] < x); // szuka elementów większych od pivota
-
         if (i<=j){
             swap(&A[i], &A[j]);
         } else{
             break;
         }
     }
+
     if (j>p){
         quick_sort_main(A, p, j);
     }
