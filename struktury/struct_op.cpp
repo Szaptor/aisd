@@ -62,7 +62,7 @@ void generate_array(int arr[], int len, generation_mode mode){
                 arr[i] = 1;
             }
             break;
-    }  
+    }
 }
 
 void shuffle_arr(int arr[], int size){
@@ -75,13 +75,11 @@ void shuffle_arr(int arr[], int size){
 
 int main(){
     srand(time(NULL));
-    // int arr[20000];
-    // generate_array(arr, 20000, DESCENDING);
-    // shuffle_arr(arr, 20000);
-
-    list_node* node1 = create_node(123);
-    list_node* node2 = create_node(321);
-    node1->next = node2;
-    cout << node1->next->val << endl;
+    list_node* head = NULL;
+    // to fix
+    insert_node(&head, create_node(4));
+    insert_node(&head, create_node(5));
+    insert_node(&head, create_node(12));
+    print_list(head);
     return 0;
 }
