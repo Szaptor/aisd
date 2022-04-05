@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include "struct_def.cpp"
 
+#define MAXLEN 200000
+
 using namespace std;
 
 void swap(int* i, int* j){
@@ -11,62 +13,14 @@ void swap(int* i, int* j){
     *j = temp;
 }
 
-enum generation_mode {RANDOM, ASCENDING, DESCENDING, VSHAPED, ASHAPED, CONSTANT};
-
-void generate_array(int arr[], int len, generation_mode mode){
-    int i, j;
-
-    switch(mode){
-        case RANDOM:
-            for (i=0; i<len; i++){
-                arr[i] = (rand() % 30000) + 1;
-            }
-            break;
-        case ASCENDING:
-            for (i=0; i<len; i++){
-                arr[i] = i + 1;
-            }
-            break;
-        case DESCENDING:
-            j = len;
-            for (i=0; i<len; i++){
-                arr[i] = j--;
-            }
-            break;
-        case VSHAPED:
-            j = 2*(len/2);
-            for (i=0; i<len/2; i++){
-                arr[i] = j;
-                j -= 2;
-            }
-            j+=1;
-            for (i=len/2; i<len; i++){
-                j += 2;
-                arr[i] = j;
-            }
-            break;
-        case ASHAPED:
-            j = 0;
-            for (i=0; i<len/2; i++){
-                arr[i] = j;
-                j += 2;
-            }
-            j -= 1;
-            for (i=len/2; i<len; i++){
-                arr[i] = j;
-                j -= 2;
-            }
-            break;
-        case CONSTANT:
-            for (i=0; i<len; i++){
-                arr[i] = 1;
-            }
-            break;
+void generate_ascending_array(int arr[], int len){
+    for (int i=0; i<len; i++){
+        arr[i] = i + 1;
     }
 }
 
 void shuffle_arr(int arr[], int size){
-    for (int i=0; i<size*2; i++){
+    for (int i=0; i<size; i++){
         int idx1 = rand() % size;
         int idx2 = rand() % size;
         swap(&arr[idx1], &arr[idx2]);
@@ -76,10 +30,31 @@ void shuffle_arr(int arr[], int size){
 int main(){
     srand(time(NULL));
     list_node* head = NULL;
-    // to fix
-    insert_node(&head, create_node(4));
-    insert_node(&head, create_node(5));
-    insert_node(&head, create_node(12));
-    print_list(head);
+    int elements, step = 1000, counter = 0;
+    elements = step;
+    int arr[MAXLEN];
+
+    while (counter++ < 15){
+        generate_ascending_array(arr, elements);
+        shuffle_arr(arr, elements);
+        cout << elements << endl;
+
+        // generating list
+        for (int i=0; i<elements; i++){
+            insert_node(&head, create_node(arr[i]));
+        }
+
+        // finding all elements
+        for (int i=0; i<elements; i++){
+            find_value(head, arr[i]);
+        }
+
+        // deleting whole list
+        for (int i=0; i<elements; i++){
+            delete_first_node(&head);
+        }
+
+        elements += step;
+    }
     return 0;
 }

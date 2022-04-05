@@ -73,7 +73,6 @@ double measure_time(int arr[], int elements, int cpyarr[], void (*sort_func)(int
 
 int main(){
     srand(time(NULL));
-// clock_t start;
     int elements, step = 10000, counter = 0;
     elements = step;
     int arr[MAXLEN], cpyarr[MAXLEN];

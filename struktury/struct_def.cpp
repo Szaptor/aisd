@@ -14,23 +14,34 @@ list_node* create_node(int val){
 
 void insert_node(list_node** head, list_node* node){
     if (*head){
-        if ((*head)->next){
+        if ((*head)->val < node->val){
+                node->next = *head;
+                *head = node;
+        } else if ((*head)->next){
             if ((*head)->val > node->val && (*head)->next->val < node->val){
                 node->next = (*head)->next;
                 (*head)->next = node;
             } else{
-                insert_node(head, node);
+                insert_node(&((*head)->next), node);
             }
         } else{
-            if ((*head)->val < node->val){
-                node->next = *head;
-                *head = node;
-            } else{
-                (*head)->next = node;
-            }
+            (*head)->next = node;
         }
     }else{
         *head = node;
+    }
+}
+
+void delete_first_node(list_node** head){
+    if (*head){
+        if ((*head)->next){
+            list_node* temp = (*head)->next;
+            free(*head);
+            *head = temp;
+        } else{
+            free(*head);
+            *head = NULL;
+        }
     }
 }
 
@@ -43,5 +54,23 @@ void print_list(list_node* head){
         } else{
             std::cout << std::endl;
         }
+    } else{
+        std::cout << "NULL" << std::endl;
+    }
+}
+
+bool find_value(list_node* head, int val){
+    if (head){
+        if (head->val == val){
+            return true;
+        } else{
+            if (find_value(head->next, val)){
+                return true;
+            } else{
+                return false;
+            }
+        }
+    } else{
+        return false;
     }
 }
