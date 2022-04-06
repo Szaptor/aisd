@@ -5,14 +5,14 @@ struct list_node{
     list_node* next;
 };
 
-list_node* create_node(int val){
+list_node* create_list_node(int val){
     list_node* node = new list_node;
     node->val = val;
     node->next = NULL;
     return node;
 }
 
-void insert_node(list_node** head, list_node* node){
+void insert_list_node(list_node** head, list_node* node){
     if (*head){
         if ((*head)->val < node->val){
                 node->next = *head;
@@ -22,7 +22,7 @@ void insert_node(list_node** head, list_node* node){
                 node->next = (*head)->next;
                 (*head)->next = node;
             } else{
-                insert_node(&((*head)->next), node);
+                insert_list_node(&((*head)->next), node);
             }
         } else{
             (*head)->next = node;
@@ -32,7 +32,7 @@ void insert_node(list_node** head, list_node* node){
     }
 }
 
-void delete_first_node(list_node** head){
+void delete_first_list_node(list_node** head){
     if (*head){
         if ((*head)->next){
             list_node* temp = (*head)->next;
@@ -59,12 +59,12 @@ void print_list(list_node* head){
     }
 }
 
-bool find_value(list_node* head, int val){
+bool find_list_value(list_node* head, int val){
     if (head){
         if (head->val == val){
             return true;
         } else{
-            if (find_value(head->next, val)){
+            if (find_list_value(head->next, val)){
                 return true;
             } else{
                 return false;
@@ -72,5 +72,56 @@ bool find_value(list_node* head, int val){
         }
     } else{
         return false;
+    }
+}
+
+struct tree_node{
+    int val;
+    tree_node* left;
+    tree_node* right;
+};
+
+tree_node* create_tree_node(int val){
+    tree_node* node = new tree_node;
+    node->val = val;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+void insert_tree_node(tree_node** root, tree_node* node){
+    if (*root){
+        if ((*root)->val > node->val){
+            insert_tree_node(&((*root)->left), node);
+        } else{
+            insert_tree_node(&((*root)->right), node);
+        }
+    } else{
+        *root = node;
+    }
+}
+
+bool find_tree_value(tree_node* root, int val){
+    if (root){
+        if (root->val == val){
+            return true;
+        } else{
+            if (val < root->val){
+                return find_tree_value(root->left, val);
+            } else{
+                return find_tree_value(root->right, val);
+            }
+        }
+    } else{
+        return false;
+    }
+}
+
+void delete_tree_postorder(tree_node** root){
+    if(*root){
+        delete_tree_postorder(&((*root)->left));
+        delete_tree_postorder(&((*root)->right));
+        free(*root);
+        *root = NULL;
     }
 }

@@ -29,30 +29,45 @@ void shuffle_arr(int arr[], int size){
 
 int main(){
     srand(time(NULL));
+
     list_node* head = NULL;
-    int elements, step = 1000, counter = 0;
+    tree_node* root = NULL;
+
+    int elements, step = 10, counter = 0;
     elements = step;
     int arr[MAXLEN];
 
-    while (counter++ < 15){
+    clock_t start, end;
+
+    while (counter++ < 1){
         generate_ascending_array(arr, elements);
         shuffle_arr(arr, elements);
         cout << elements << endl;
 
-        // generating list
+        // start = clock();
+        // end = (double)(clock() - start) / CLOCKS_PER_SEC;
+        
+        // generating
+        // for (int i=0; i<elements; i++){
+            // insert_list_node(&head, create_list_node(arr[i]));
+        // }
         for (int i=0; i<elements; i++){
-            insert_node(&head, create_node(arr[i]));
+            insert_tree_node(&root, create_tree_node(arr[i]));
         }
 
         // finding all elements
+        // for (int i=0; i<elements; i++){
+        //     find_list_value(head, arr[i]);
+        // }
         for (int i=0; i<elements; i++){
-            find_value(head, arr[i]);
+            find_tree_value(root, arr[i]);
         }
 
         // deleting whole list
-        for (int i=0; i<elements; i++){
-            delete_first_node(&head);
-        }
+        // for (int i=0; i<elements; i++){
+        //     delete_first_list_node(&head);
+        // }
+            delete_tree_postorder(&root);
 
         elements += step;
     }
