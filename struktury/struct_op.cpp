@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include "struct_def.cpp"
 
-#define MAXARRLEN 20000
+#define MAXARRLEN 200000
 
 using namespace std;
 
@@ -33,7 +33,7 @@ int main(){
     tree_node* root = NULL;
     tree_node* avl_root = NULL;
 
-    int elements, step = 1000, counter = 0;
+    int elements, step = 5000, counter = 0;
     elements = step;
 
     int arr[MAXARRLEN];
@@ -41,9 +41,9 @@ int main(){
 
     clock_t start, end;
 
-    // cout << "-DELETING-" << endl;
-    // cout << "elements;list;tree" << endl;
-    cout << "elements;bst_height;avl_height" << endl;
+    cout << "-DELETING-" << endl;
+    cout << "elements;list;tree" << endl;
+    // cout << "elements;bst_height;avl_height" << endl;
     while (counter++ < 15){
         delete_list(&head);
         delete_tree_postorder(&root);
@@ -56,16 +56,16 @@ int main(){
         // building
         
         // start = clock();
-        // for (int i=0; i<elements; i++){
-        //     insert_list_node(&head, create_list_node(arr[i]));
-        // }
+        for (int i=0; i<elements; i++){
+            insert_list_node(&head, create_list_node(arr[i]));
+        }
         // cout << (double)(clock() - start) / CLOCKS_PER_SEC << ";";
 
         // start = clock();
         for (int i=0; i<elements; i++){
             insert_tree_node(&root, create_tree_node(arr[i]));
         }
-        // cout << (double)(cloccout << vec[0] << endl;k() - start) / CLOCKS_PER_SEC << ";";
+        // cout << (double)(clock() - start) / CLOCKS_PER_SEC << ";";
 
         // finding all elements
         
@@ -82,18 +82,18 @@ int main(){
         // cout << (double)(clock() - start) / CLOCKS_PER_SEC << ";";
 
         // deleting whole list
-        // start = clock();
-        // delete_list(&head);
-        // cout << (double)(clock() - start) / CLOCKS_PER_SEC << ";";
+        start = clock();
+        delete_list(&head);
+        cout << (double)(clock() - start) / CLOCKS_PER_SEC << ";";
 
-        // start = clock();
-        // delete_tree_postorder(&root);
-        // cout << (double)(clock() - start) / CLOCKS_PER_SEC;
+        start = clock();
+        delete_tree_postorder(&root);
+        cout << (double)(clock() - start) / CLOCKS_PER_SEC;
 
-        read_tree_inorder(root, &vec);
-        binary_avl_building(&avl_root, vec, 0, vec.size());
-        cout << height_of_tree(root) << ";";
-        cout << height_of_tree(avl_root);
+        // read_tree_inorder(root, &vec);
+        // binary_avl_building(&avl_root, vec, 0, vec.size());
+        // cout << height_of_tree(root) << ";";
+        // cout << height_of_tree(avl_root);
 
         elements += step;
         cout << endl;
