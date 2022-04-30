@@ -1,43 +1,22 @@
 #include <iostream>
-#include <cstdlib>
-#include <map>
+#include <random>
 
 #define MaxMatrixSize 5
 
 using namespace std;
 
-// not working
-bool check_if_cycle(int arr[][MaxMatrixSize], int v, map<int, bool> visited, int row=0){
-    for (int i=0; i<v; i++){
-        if (arr[row][i]){
-            if (visited[i]){
-                return true;
-            } else{
-                visited[row] = true;
-            }
 
-            if (check_if_cycle(arr, v, visited, i)){
-                return true;
-            }
-        }
+void generate_dag(int arr[][MaxMatrixSize], int v, float nasycenie){
+    int row, col;
+    // to generate random value from range
+    random_device rd;
+    mt19937 gen(rd());
+    for (int i=0; i<(v*(v-1)/2)*nasycenie; i++){
+        row = i % (v-1);
+
+        uniform_int_distribution<> col_range(row+1, v-1);
+        col = col_range(gen);
+
+        arr[row][col] = 1;
     }
-    return false;
-}
-
-void create_random_arc(int arr[][MaxMatrixSize], int v){
-    srand(time(NULL));
-    int x=-1, y;
-
-    do{
-        if(x>=0){
-            arr[x][y] = 0;
-        }
-        do{
-            x = rand() % v;
-            y = rand() % v;
-        }while(!arr[x][y] && y!=x);
-        arr[x][y] = 1;
-    }while(false);
-    
-    arr[x][y] = 1;
 }
