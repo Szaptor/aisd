@@ -16,6 +16,14 @@ void print_arr(int arr[][MaxMatrixSize], int v){
 }
 
 int main(){
-    generate_dag(adj_matrix, v, 0.6);
+    generate_dag(adj_matrix, v, 0.4);
     print_arr(adj_matrix, v);
+
+    int visited[v] = {0};
+    int sorted[v];
+    for (int i=0; i<v; i++)
+        top_sort(adj_matrix, i, v, visited, sorted);
+    for (int i=0; i<v; i++){
+        cout << sorted[i] << endl;
+    }
 }
