@@ -5,6 +5,7 @@ using namespace std;
 
 int v = 5;
 int adj_matrix[MaxMatrixSize][MaxMatrixSize] = { 0 }; // initilize to zero
+node* inc_list[MaxMatrixSize] = {NULL};
 
 void print_arr(int arr[][MaxMatrixSize], int v){
     for (int i=0; i<v; i++){
@@ -23,7 +24,6 @@ int main(){
     int sorted[v];
     for (int i=0; i<v; i++)
         top_sort(adj_matrix, i, v, visited, sorted);
-    for (int i=0; i<v; i++){
-        cout << sorted[i] << endl;
-    }
+
+    adj_matrix_to_inc_list(adj_matrix, v, inc_list);
 }
