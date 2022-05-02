@@ -1,7 +1,8 @@
 #include <iostream>
 #include <random>
+#include <vector>
 
-#define MaxMatrixSize 5
+#define MaxMatrixSize 100000
 
 using namespace std;
 
@@ -22,42 +23,57 @@ void generate_dag(int arr[][MaxMatrixSize], int v, float saturation){
     }
 }
 
-void top_sort(int arr[][MaxMatrixSize], int vertex, int v, int visited[MaxMatrixSize], int sorted[MaxMatrixSize]){
+void adj_matrix_to_inc_list(int arr[][MaxMatrixSize], int v, vector<int> inc_list[MaxMatrixSize]){
+    for (int row=0; row<v; row++){
+        for (int col=0; col<v; col++){
+            if (arr[row][col]){
+                inc_list[row].push_back(col);
+            }
+        }
+    }
+}
+
+void top_sort_main(int arr[][MaxMatrixSize], int vertex, int v, int visited[MaxMatrixSize], int sorted[MaxMatrixSize]){
     static int idx = 0;
     if (!visited[vertex]){
         visited[vertex] = 1;
         for (int col=0; col<v; col++){
             if (arr[vertex][col] && !visited[col]){
-                top_sort(arr, col, v, visited, sorted);
+                top_sort_main(arr, col, v, visited, sorted);
             }
         }
         sorted[idx++] = vertex+1;
     }
 }
 
-struct node{
-    int val;
-    node* next;
-};
-
-void adj_matrix_to_inc_list(int arr[][MaxMatrixSize], int v, node* inc_list[MaxMatrixSize]){
-    node* head;
-    for (int row=0; row<v; row++){
-        for (int col=0; col<v; col++){
-            if (arr[row][col]){
-                if (head = inc_list[row]){ // there are some nodes
-                    while(head->next){
-                        head = head->next;
-                    }
-                    head->next = new node;
-                    head->next->next = NULL;
-                    head->next->val = col;
-                } else{
-                    inc_list[row] = new node;
-                    inc_list[row]->val = col;
-                    inc_list[row]->next = NULL;
-                }
+void top_sort_main(vector<int> arr[MaxMatrixSize], int vertex, int v, int visited[MaxMatrixSize], int sorted[MaxMatrixSize]){
+    static int idx = 0;
+    if (!visited[vertex]){
+        visited[vertex] = 1;
+        for (int i=0; i<arr[vertex].size(); i++){
+            int next_node = arr[vertex][i];
+            if (!visited[next_node]){
+                top_sort_main(arr, next_node, v, visited, sorted);
             }
         }
+        sorted[idx++] = vertex+1;
+    }
+}
+
+void top_sort(vector<int> arr[MaxMatrixSize], int v, int visited[MaxMatrixSize], int sorted[MaxMatrixSize]){
+    for (int i=0; i<v; i++){
+        if (sorted[v-1]){
+            break;
+        }
+        top_sort_main(arr, i, v, visited, sorted);
+    }
+}
+
+void top_sort(int arr[][MaxMatrixSize], int v, int visited[MaxMatrixSize], int sorted[MaxMatrixSize]){
+    for (int i=0; i<v; i++){
+        if (sorted[v-1]){
+            break;
+        }
+        top_sort_main(arr, i, v, visited, sorted);
     }
 }
