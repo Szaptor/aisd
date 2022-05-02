@@ -5,11 +5,12 @@
 
 using namespace std;
 
-int v = 10000;
+int v, step = 1333, counter = 0;
+
 int adj_matrix[MaxMatrixSize][MaxMatrixSize] = { 0 }; // initilize to zero
 vector<int> inc_list[MaxMatrixSize];
 
-// clock_t start;
+clock_t start;
 
 void print_arr(int arr[][MaxMatrixSize], int v){
     for (int i=0; i<v; i++){
@@ -20,11 +21,11 @@ void print_arr(int arr[][MaxMatrixSize], int v){
     }
 }
 
-// void clear_arr(int arr[][MaxMatrixSize], int v){
-//     for (int i=0; i<v; i++){
-//         fill(arr[i], arr[i]+v, 0);
-//     }
-// }
+void clear_arr(int arr[][MaxMatrixSize], int v){
+    for (int i=0; i<v; i++){
+        fill(arr[i], arr[i]+v, 0);
+    }
+}
 
 void print_vec_arr(vector<int> arr[MaxMatrixSize], int v){
     for (int i=0; i<v; i++){
@@ -39,34 +40,47 @@ void print_vec_arr(vector<int> arr[MaxMatrixSize], int v){
     }
 }
 
-// void clear_vec_arr(vector<int> arr[MaxMatrixSize], int v){
-//     for (int i=0; i<v; i++){
-//         for (int j=0; j<arr[i].size(); j++){
-//             arr[j].clear();
-//         }
-//     }
-// }
+void clear_vec_arr(vector<int> arr[MaxMatrixSize], int v){
+    for (int i=0; i<v; i++){
+        for (int j=0; j<arr[i].size(); j++){
+            arr[j].clear();
+        }
+    }
+}
 
 int main(){
+    v = step;
     cout << "elements;macierz sąsiedztwa;lista incydencji" << endl;
-    generate_dag(adj_matrix, v, 0.6);
-    adj_matrix_to_inc_list(adj_matrix, v, inc_list);
-    // print_arr(adj_matrix, v);
-    // print_vec_arr(inc_list, v);
+    while(counter++ < 15){
+        cout << v << ";";
 
-    int visited[v] = {0};
-    int sorted[v];
+        generate_dag(adj_matrix, v, 0.4);
+        adj_matrix_to_inc_list(adj_matrix, v, inc_list);
+        // print_arr(adj_matrix, v);
+        // print_vec_arr(inc_list, v);
 
-    // sort by using adjecancy matrix
-    // start = clock();
-    top_sort(adj_matrix, v, visited, sorted);
-    // cout << (double)(clock() - start) / CLOCKS_PER_SEC << ";";
+        int visited[v] = {0};
+        int sorted[v];
 
-    fill(sorted, sorted+v, 0);
-    fill(visited, visited+v, 0);
+        // sort by using adjecancy matrix
+        start = clock();
+        top_sort(adj_matrix, v, visited, sorted);
+        cout << (double)(clock() - start) / CLOCKS_PER_SEC << ";";
 
-    // sorting by using incidency list
-    // start = clock();
-    top_sort(inc_list, v, visited, sorted);
-    // cout << (double)(clock() - start) / CLOCKS_PER_SEC << endl;
+        fill(sorted, sorted+v, 0);
+        fill(visited, visited+v, 0);
+
+        // sorting by using incidency list
+        start = clock();
+        top_sort(inc_list, v, visited, sorted);
+        cout << (double)(clock() - start) / CLOCKS_PER_SEC << endl;
+
+        fill(sorted, sorted+v, 0);
+        fill(visited, visited+v, 0);
+
+        clear_arr(adj_matrix, v);
+        clear_vec_arr(inc_list, v);
+
+        v += step;
+    }
 }

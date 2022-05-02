@@ -2,7 +2,7 @@
 #include <random>
 #include <vector>
 
-#define MaxMatrixSize 100000
+#define MaxMatrixSize 20000
 
 using namespace std;
 
@@ -33,8 +33,11 @@ void adj_matrix_to_inc_list(int arr[][MaxMatrixSize], int v, vector<int> inc_lis
     }
 }
 
-void top_sort_main(int arr[][MaxMatrixSize], int vertex, int v, int visited[MaxMatrixSize], int sorted[MaxMatrixSize]){
+void top_sort_main(int arr[][MaxMatrixSize], int vertex, int v, int visited[MaxMatrixSize], int sorted[MaxMatrixSize], bool save_idx=true){
     static int idx = 0;
+    if (!save_idx){
+        idx = 0;
+    }
     if (!visited[vertex]){
         visited[vertex] = 1;
         for (int col=0; col<v; col++){
@@ -46,8 +49,11 @@ void top_sort_main(int arr[][MaxMatrixSize], int vertex, int v, int visited[MaxM
     }
 }
 
-void top_sort_main(vector<int> arr[MaxMatrixSize], int vertex, int v, int visited[MaxMatrixSize], int sorted[MaxMatrixSize]){
+void top_sort_main(vector<int> arr[MaxMatrixSize], int vertex, int v, int visited[MaxMatrixSize], int sorted[MaxMatrixSize], bool save_idx=true){
     static int idx = 0;
+    if (!save_idx){
+        idx = 0;
+    }
     if (!visited[vertex]){
         visited[vertex] = 1;
         for (int i=0; i<arr[vertex].size(); i++){
@@ -65,7 +71,10 @@ void top_sort(vector<int> arr[MaxMatrixSize], int v, int visited[MaxMatrixSize],
         if (sorted[v-1]){
             break;
         }
-        top_sort_main(arr, i, v, visited, sorted);
+        if (i == 0)
+            top_sort_main(arr, i, v, visited, sorted, false);
+        else
+            top_sort_main(arr, i, v, visited, sorted);
     }
 }
 
@@ -74,6 +83,9 @@ void top_sort(int arr[][MaxMatrixSize], int v, int visited[MaxMatrixSize], int s
         if (sorted[v-1]){
             break;
         }
-        top_sort_main(arr, i, v, visited, sorted);
+        if (i == 0)
+            top_sort_main(arr, i, v, visited, sorted, false);
+        else
+            top_sort_main(arr, i, v, visited, sorted);
     }
 }
